@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mall-admin-deployment
-  namespace: default
+  namespace: mall-swarm
   labels:
     app: mall-admin
 spec:
@@ -18,7 +18,7 @@ spec:
       containers:
         - name: mall-admin
           # 指定Docker Hub中的镜像地址
-          image: macrodocker/mall-admin:1.0-SNAPSHOT
+          image: 192.168.1.100:5000/mall-admin:2.0-SNAPSHOT
           ports:
             - containerPort: 8080
           env:
@@ -30,9 +30,9 @@ spec:
               value: Asia/Shanghai
             # 指定Nacos地址
             - name: spring.cloud.nacos.discovery.server-addr
-              value: http://192.168.3.101:8848
+              value: http://192.168.1.111:8848
             - name: spring.cloud.nacos.config.server-addr
-              value: http://192.168.3.101:8848
+              value: http://192.168.1.111:8848
           volumeMounts:
             - mountPath: /var/logs
               name: log-volume
@@ -41,3 +41,18 @@ spec:
           hostPath:
             path: /mydata/app/mall-admin/logs
             type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mall-admin-service
+  namespace: mall-swarm
+spec:
+  type: ClusterIP
+  selector:
+    app: mall-admin
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080

@@ -11,12 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.annotation.Resource;
 import java.security.Principal;
 import java.util.Map;
 
@@ -32,18 +30,42 @@ public class AuthController {
     @Autowired
     private TokenEndpoint tokenEndpoint;
 
-    @ApiOperation("Oauth2获取token")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "grant_type", value = "授权模式", required = true),
-            @ApiImplicitParam(name = "client_id", value = "Oauth2客户端ID", required = true),
-            @ApiImplicitParam(name = "client_secret", value = "Oauth2客户端秘钥", required = true),
-            @ApiImplicitParam(name = "refresh_token", value = "刷新token"),
-            @ApiImplicitParam(name = "username", value = "登录用户名"),
-            @ApiImplicitParam(name = "password", value = "登录密码")
-    })
-    @RequestMapping(value = "/token", method = RequestMethod.POST)
-    public CommonResult<Oauth2TokenDto> postAccessToken(@ApiIgnore Principal principal, @ApiIgnore @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
-        OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
+//    @Autowired
+//    private Principal principal;
+
+//    @ApiOperation("Oauth2获取token")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "grant_type", value = "授权模式", required = true, defaultValue = "password"),
+//            @ApiImplicitParam(name = "client_id", value = "Oauth2客户端ID", required = true, defaultValue = "portal-app"),
+//            @ApiImplicitParam(name = "client_secret", value = "Oauth2客户端秘钥", required = true, defaultValue = "123456"),
+//            @ApiImplicitParam(name = "scope", value = "范围", required = true, defaultValue = "all"),
+//            @ApiImplicitParam(name = "refresh_token", value = "刷新token"),
+//            @ApiImplicitParam(name = "username", value = "登录用户名"),
+//            @ApiImplicitParam(name = "password", value = "登录密码")
+//    })
+//
+//    @RequestMapping(value = "/token", method = RequestMethod.POST)
+//    public CommonResult<Oauth2TokenDto> postAccessToken(@ApiIgnore Principal principal, @ApiIgnore @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
+//        OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
+//        Oauth2TokenDto oauth2TokenDto = Oauth2TokenDto.builder()
+//                .token(oAuth2AccessToken.getValue())
+//                .refreshToken(oAuth2AccessToken.getRefreshToken().getValue())
+//                .expiresIn(oAuth2AccessToken.getExpiresIn())
+//                .tokenHead(AuthConstant.JWT_TOKEN_PREFIX).build();
+//
+//        return CommonResult.success(oauth2TokenDto);
+//    }
+
+    @PostMapping(value = "/token")
+    CommonResult getAccessToken(Principal principal, @RequestParam Map<String, String> parameters) {
+        OAuth2AccessToken oAuth2AccessToken = null;
+
+        try {
+            oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
+        } catch (HttpRequestMethodNotSupportedException e) {
+            e.printStackTrace();
+        }
+
         Oauth2TokenDto oauth2TokenDto = Oauth2TokenDto.builder()
                 .token(oAuth2AccessToken.getValue())
                 .refreshToken(oAuth2AccessToken.getRefreshToken().getValue())
@@ -53,3 +75,6 @@ public class AuthController {
         return CommonResult.success(oauth2TokenDto);
     }
 }
+/**
+ token ： eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJibHpnIiwic2NvcGUiOlsiYWxsIl0sImlkIjoxMSwiZXhwIjoxNjQyMDU2OTg5LCJhdXRob3JpdGllcyI6WyLliY3lj7DkvJrlkZgiXSwianRpIjoiNzg0MjI1NGEtOGU2My00YjhiLWJiOTYtYmFiZTI0MDFiNWJkIiwiY2xpZW50X2lkIjoicG9ydGFsLWFwcCJ9.mDjw9aTU6ADl8eajiFY-TVzRIeajqtyVnFqlUIZNjCxRMbXKzrTv9VkfzIrtEyEkieDqpFVfE9FhPLFSjh4cj28lZPdvj7PkSeru7CvKcpPLYC-CIYOHXm21PEIJDKqhFjzzyodyGShkEaWBZUarYR4C9BhlFbA5Ww65fDLgtXA
+ */

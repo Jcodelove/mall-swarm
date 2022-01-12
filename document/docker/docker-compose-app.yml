@@ -1,8 +1,8 @@
 version: '3'
 services:
   mall-admin:
-    image: mall/mall-admin:1.0-SNAPSHOT
-    container_name: mall-admin
+    image: 192.168.1.100:5000/mall-admin:2.0-SNAPSHOT
+    container_name: small-admin
     ports:
       - 8080:8080
     volumes:
@@ -14,8 +14,8 @@ services:
       - mysql:db #可以用db这个域名访问mysql服务
       - nacos-registry:nacos-registry #可以用nacos-registry这个域名访问nacos服务
   mall-search:
-    image: mall/mall-search:1.0-SNAPSHOT
-    container_name: mall-search
+    image: 192.168.1.100:5000/mall-search:2.0-SNAPSHOT
+    container_name: small-search
     ports:
       - 8081:8081
     volumes:
@@ -28,8 +28,8 @@ services:
       - mysql:db #可以用db这个域名访问mysql服务
       - nacos-registry:nacos-registry #可以用nacos-registry这个域名访问nacos服务
   mall-portal:
-    image: mall/mall-portal:1.0-SNAPSHOT
-    container_name: mall-portal
+    image: 192.168.1.100:5000/mall-portal:2.0-SNAPSHOT
+    container_name: small-portal
     ports:
       - 8085:8085
     volumes:
@@ -44,8 +44,8 @@ services:
       - rabbitmq:rabbit #可以用rabbit这个域名访问rabbitmq服务
       - nacos-registry:nacos-registry #可以用nacos-registry这个域名访问nacos服务
   mall-auth:
-    image: mall/mall-auth:1.0-SNAPSHOT
-    container_name: mall-auth
+    image: 192.168.1.100:5000/mall-auth:2.0-SNAPSHOT
+    container_name: small-auth
     ports:
       - 8401:8401
     volumes:
@@ -56,8 +56,8 @@ services:
     external_links:
       - nacos-registry:nacos-registry #可以用nacos-registry这个域名访问nacos服务
   mall-gateway:
-    image: mall/mall-gateway:1.0-SNAPSHOT
-    container_name: mall-gateway
+    image: 192.168.1.100:5000/mall-gateway:2.0-SNAPSHOT
+    container_name: small-gateway
     ports:
       - 8201:8201
     volumes:
@@ -69,8 +69,8 @@ services:
       - redis:redis #可以用redis这个域名访问redis服务
       - nacos-registry:nacos-registry #可以用nacos-registry这个域名访问nacos服务
   mall-monitor:
-    image: mall/mall-monitor:1.0-SNAPSHOT
-    container_name: mall-monitor
+    image: 192.168.1.100:5000/mall-monitor:2.0-SNAPSHOT
+    container_name: small-monitor
     ports:
       - 8101:8101
     volumes:

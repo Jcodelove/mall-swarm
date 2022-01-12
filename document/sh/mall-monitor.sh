@@ -11,5 +11,5 @@ docker run -p 8101:8101 --name ${app_name} \
 -e TZ="Asia/Shanghai" \
 -v /etc/localtime:/etc/localtime \
 -v /mydata/app/${app_name}/logs:/var/logs \
--d mall/${app_name}:1.0-SNAPSHOT
+-d mall/${app_name}:2.0-SNAPSHOT
 echo '----start container----'

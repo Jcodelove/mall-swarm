@@ -20,7 +20,7 @@ public class SwaggerConfig extends BaseSwaggerConfig {
                 .title("mall后台系统")
                 .description("mall后台相关接口文档")
                 .contactName("macro")
-                .version("1.0")
+                .version("2.0")
                 .enableSecurity(true)
                 .build();
     }

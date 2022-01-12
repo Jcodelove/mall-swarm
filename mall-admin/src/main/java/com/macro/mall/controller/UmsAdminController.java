@@ -69,7 +69,13 @@ public class UmsAdminController {
             List<String> roles = roleList.stream().map(UmsRole::getName).collect(Collectors.toList());
             data.put("roles",roles);
         }
-        return CommonResult.success(data);
+        CommonResult<Map<String, Object>> result = null;
+        try {
+            result = CommonResult.success(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @ApiOperation(value = "登出功能")

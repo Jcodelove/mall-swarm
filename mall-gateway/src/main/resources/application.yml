@@ -46,7 +46,7 @@ spring:
   redis:
     database: 0
     port: 6379
-    host: localhost
+    host: 192.168.1.111
     password:
 secure:
   ignore:

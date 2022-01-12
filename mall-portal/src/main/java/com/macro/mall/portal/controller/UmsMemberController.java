@@ -73,6 +73,7 @@ public class UmsMemberController {
     @RequestMapping(value = "/loadByUsername", method = RequestMethod.GET)
     @ResponseBody
     public UserDto loadUserByUsername(@RequestParam String username) {
+
         return memberService.loadUserByUsername(username);
     }
 }

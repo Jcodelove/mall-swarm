@@ -179,7 +179,14 @@ public class UmsMemberServiceImpl implements UmsMemberService {
         params.put("grant_type","password");
         params.put("username",username);
         params.put("password",password);
-        return authService.getAccessToken(params);
+        CommonResult result = null;
+        try {
+            result = authService.getAccessToken(params);
+        } catch (Exception e) {
+            System.out.println("RPC 调用失败");
+            e.printStackTrace();
+        }
+        return result;
     }
 
     //对输入的验证码进行校验
