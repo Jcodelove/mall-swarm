@@ -56,6 +56,16 @@ public class AuthController {
 //        return CommonResult.success(oauth2TokenDto);
 //    }
 
+    @ApiOperation("Oauth2获取token")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "grant_type", value = "授权模式", required = true, defaultValue = "password"),
+            @ApiImplicitParam(name = "client_id", value = "Oauth2客户端ID", required = true, defaultValue = "portal-app"),
+            @ApiImplicitParam(name = "client_secret", value = "Oauth2客户端秘钥", required = true, defaultValue = "123456"),
+            @ApiImplicitParam(name = "scope", value = "范围", required = true, defaultValue = "all"),
+            @ApiImplicitParam(name = "refresh_token", value = "刷新token"),
+            @ApiImplicitParam(name = "username", value = "登录用户名"),
+            @ApiImplicitParam(name = "password", value = "登录密码")
+    })
     @PostMapping(value = "/token")
     CommonResult getAccessToken(Principal principal, @RequestParam Map<String, String> parameters) {
         OAuth2AccessToken oAuth2AccessToken = null;

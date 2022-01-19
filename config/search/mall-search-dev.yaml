@@ -1,14 +1,14 @@
 spring:
   datasource:
-    url: jdbc:mysql://192.168.1.111:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://192.168.1.238:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
     password: root
   elasticsearch:
     rest:
-      uris: http://192.168.1.111:9200
+      uris: http://192.168.1.238:9200
 logging:
   level:
     root: info
     com.macro.mall: debug
 logstash:
-  host: 192.168.1.111
+  host: 192.168.1.238

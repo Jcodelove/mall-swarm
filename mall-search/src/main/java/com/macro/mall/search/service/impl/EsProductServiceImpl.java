@@ -1,5 +1,6 @@
 package com.macro.mall.search.service.impl;
 
+import cn.hutool.json.JSONUtil;
 import com.macro.mall.search.dao.EsProductDao;
 import com.macro.mall.search.domain.EsProduct;
 import com.macro.mall.search.domain.EsProductRelatedInfo;
@@ -20,6 +21,7 @@ import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.hibernate.validator.internal.constraintvalidators.bv.size.SizeValidatorForArraysOfLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 
@@ -240,6 +245,44 @@ public class EsProductServiceImpl implements EsProductService {
         NativeSearchQuery searchQuery = builder.build();
         SearchHits<EsProduct> searchHits = elasticsearchRestTemplate.search(searchQuery, EsProduct.class);
         return convertProductRelatedInfo(searchHits);
+    }
+
+    @Override
+    public int importAllY(Long left, Long right) {
+        List<Long> ids = productDao.getAllIds();
+        if (left == null && right == null) {
+
+        }
+
+        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        CountDownLatch countDownLatch = new CountDownLatch(ids.size());
+        ids = ids.stream().skip(11800L).collect(Collectors.toList());
+        for (Long id : ids) {
+            fixedThreadPool.execute(() -> {
+                List<EsProduct> esProductList = productDao.getAllEsProductList(id);
+                EsProduct esProduct = esProductList.get(0);
+                if (esProductList.size() > 0) {
+                    try {
+                        productRepository.save(esProduct);
+                    } finally {
+                        countDownLatch.countDown();
+                    }
+                }
+            });
+            LOGGER.debug("count", id);
+        }
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            LOGGER.debug(" ",e);
+        }
+        fixedThreadPool.shutdown();
+        return 0;
+    }
+
+    @Override
+    public void deleteAll() {
+        elasticsearchRestTemplate.deleteIndex("pms");
     }
 
     /**

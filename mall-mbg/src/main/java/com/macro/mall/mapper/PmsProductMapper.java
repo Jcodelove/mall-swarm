@@ -3,7 +3,12 @@ package com.macro.mall.mapper;
 import com.macro.mall.model.PmsProduct;
 import com.macro.mall.model.PmsProductExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+
 
 public interface PmsProductMapper {
     long countByExample(PmsProductExample example);

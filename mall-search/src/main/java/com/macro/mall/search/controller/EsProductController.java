@@ -34,6 +34,22 @@ public class EsProductController {
         return CommonResult.success(count);
     }
 
+    @ApiOperation(value = "导入所有数据库中商品到ES-改良版")
+    @RequestMapping(value = "/importAllY", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult<Integer> importAllListY(@PathVariable(required = false) Long left, @PathVariable(required = false) Long right) {
+        int count = esProductService.importAllY(left, right);
+        return CommonResult.success(count);
+    }
+
+    @ApiOperation(value = "根据id批量删除商品")
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult<Object> delete(@RequestParam("ids") List<Long> ids) {
+        esProductService.delete(ids);
+        return CommonResult.success(null);
+    }
+
     @ApiOperation(value = "根据id删除商品")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -42,11 +58,11 @@ public class EsProductController {
         return CommonResult.success(null);
     }
 
-    @ApiOperation(value = "根据id批量删除商品")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @ApiOperation(value = "删除全部商品")
+    @RequestMapping(value = "/delete/all", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult<Object> delete(@RequestParam("ids") List<Long> ids) {
-        esProductService.delete(ids);
+    public CommonResult<Object> deleteAll() {
+        esProductService.deleteAll();
         return CommonResult.success(null);
     }
 

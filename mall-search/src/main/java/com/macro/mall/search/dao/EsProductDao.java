@@ -14,4 +14,10 @@ public interface EsProductDao {
      * 获取指定ID的搜索商品
      */
     List<EsProduct> getAllEsProductList(@Param("id") Long id);
+
+    /**
+     * 获取商品的全部ID
+     * @return
+     */
+    List<Long> getAllIds();
 }

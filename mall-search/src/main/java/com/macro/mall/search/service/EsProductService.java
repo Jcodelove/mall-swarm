@@ -50,4 +50,14 @@ public interface EsProductService {
      * 获取搜索词相关品牌、分类、属性
      */
     EsProductRelatedInfo searchRelatedInfo(String keyword);
+
+    /**
+     * 从数据库中导入所有商品到ES  改良
+     * @param left
+     * @param right
+     * @return
+     */
+    int importAllY(Long left, Long right);
+
+    void deleteAll();
 }

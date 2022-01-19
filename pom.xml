@@ -34,7 +34,9 @@
         <skipTests>true</skipTests>
 
 <!--        <docker.host>http://192.168.3.101:2375</docker.host>-->
-        <docker.host>http://192.168.1.100:2375</docker.host>
+<!--        <docker.host>http://192.168.1.100:2375</docker.host>-->
+<!--        镜像打包到本地 需要先开启 socat https://www.jianshu.com/p/f37318e09bf5 -->
+        <docker.host>http://127.0.0.1:2375</docker.host>
 
 
         <docker.maven.plugin.version>1.2.2</docker.maven.plugin.version>
@@ -86,6 +88,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+
+<!--        普罗米修斯监控-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
     </dependencies>
 
